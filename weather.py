@@ -71,7 +71,8 @@ class Weather:
         self.clouds_level = clouds_level
         self.rain_volume = rain_volume
         self.snow_volume = snow_volume
-        self.timestamp = timestamp
+
+        self.timestamp = datetime.utcfromtimestamp(timestamp)
 
 
 
