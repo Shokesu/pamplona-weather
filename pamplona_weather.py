@@ -21,6 +21,7 @@ SOFTWARE.
 '''
 
 from datetime import datetime
+from re import findall
 from pyvalid import accepts
 import sqlite3 as sqlite
 from os.path import join, dirname
@@ -66,7 +67,13 @@ def get_pamplona_weather_history(start, end = None):
         # Procesamos el resultado.
         weather_history = []
         for register in registers:
-            weather = Weather(**dict(zip(attrs, register)))
+            params = dict(zip(attrs, register))
+
+            # Procesamos algunos parámetros
+            params['timestamp'] = datetime.utcfromtimestamp(params['timestamp'])
+            params['conditions'] = findall('[ ]*([^,]+)[ ]*,?', params['conditions'])
+
+            weather = Weather(**params)
             weather_history.append(weather)
 
         return weather_history
